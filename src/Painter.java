@@ -19,7 +19,7 @@ public class Painter extends JPanel
 	
 	public Painter() { }
 	
-	private ArrayList<SpaceShip> spaceShips = null;
+	private ArrayList<SpaceShip> spaceShips = new ArrayList<SpaceShip>();
 	
 	@Override
 	public void paintComponent(Graphics g)
@@ -27,29 +27,30 @@ public class Painter extends JPanel
 		for(SpaceShip ship : spaceShips)
 		{			
 			try
-			{				
+			{		
 				System.out.println(new File(ship.getSpriteSrc()).getAbsolutePath());
 				BufferedImage img = ImageIO.read(new File(ship.getSpriteSrc()));
 				g.drawImage(img, (ship.getPosition().x * DRAWING_GRID_SIZE) + (DRAWING_GRID_SIZE / 4), (ship.getPosition().y * DRAWING_GRID_SIZE) + (DRAWING_GRID_SIZE / 4), SPRITE_SIZE, SPRITE_SIZE, null);
-			
-				//Draw the grid
-				
-				g.setColor(Color.BLACK);
-				
-				for (int y = 0; y < GRID_ROWS + 1; ++y)
-				  {
-				    g.drawLine(0, y * DRAWING_GRID_SIZE, GRID_ROWS * DRAWING_GRID_SIZE, y * DRAWING_GRID_SIZE);
-				  }
 
-				  for (int x = 0; x < GRID_COLUMNS + 1; ++x)
-				  {
-				    g.drawLine(x * DRAWING_GRID_SIZE, 0, x * DRAWING_GRID_SIZE, GRID_COLUMNS * DRAWING_GRID_SIZE);
-				  }
 			}
 			catch(IOException ex)
 			{
 				System.out.println(ex.getMessage());
 			}
+		}
+		
+		//Draw the grid
+		
+		g.setColor(Color.BLACK);
+		
+		for (int y = 0; y < GRID_ROWS + 1; ++y)
+		{
+		    g.drawLine(0, y * DRAWING_GRID_SIZE, GRID_ROWS * DRAWING_GRID_SIZE, y * DRAWING_GRID_SIZE);
+		}
+
+		for (int x = 0; x < GRID_COLUMNS + 1; ++x)
+		{
+			g.drawLine(x * DRAWING_GRID_SIZE, 0, x * DRAWING_GRID_SIZE, GRID_COLUMNS * DRAWING_GRID_SIZE);
 		}
 	}
 	
