@@ -2,13 +2,16 @@ import java.awt.Point;
 
 public abstract class SpaceShip
 {
+	private final String spriteSrc;
+	
 	private String name;
 	private Point  position;
 	
-	public SpaceShip(String name, Point position)
+	public SpaceShip(String name, Point position, String src)
 	{
 		this.name = name;
 		this.position = position;
+		this.spriteSrc = src;
 	}
 	
 	public String getName()
@@ -29,5 +32,10 @@ public abstract class SpaceShip
 	public void setPosition(Point position)
 	{
 		this.position = position;
+	}
+	
+	public String getSpriteSrc()
+	{
+		return this.spriteSrc;
 	}
 }
