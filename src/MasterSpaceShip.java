@@ -8,4 +8,15 @@ public class MasterSpaceShip extends SpaceShip
 	{
 		super(name, position);
 	}
+	
+	public OperationalMode getOperationalMode()
+	{
+		return this.operationalMode;
+	}
+	
+	public void setOperationalMode(OperationalMode operationalMode)
+	{
+		this.operationalMode = operationalMode;
+	}
 }
+
