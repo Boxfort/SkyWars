@@ -108,6 +108,9 @@ public class SkyWarsGame
 		
 		JButton btnEnd = new JButton("End Game");
 		rightPanel.add(btnEnd);
+		
+		spaceShips.add(new MasterSpaceShip("Hello", (new Point(1,1))));
+		draw();
 	}
 
 	public void draw()
