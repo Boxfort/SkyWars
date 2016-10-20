@@ -3,7 +3,7 @@ import java.awt.Point;
 public abstract class SpaceShip
 {
 	private String name;
-	private Point position;
+	private Point  position;
 	
 	public SpaceShip(String name, Point position)
 	{
