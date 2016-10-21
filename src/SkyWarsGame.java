@@ -94,9 +94,25 @@ public class SkyWarsGame
 		rightPanel.setLayout(new GridLayout(5, 1, 0, 10));
 		
 		JButton btnStart = new JButton("Start Game");
+		btnStart.addActionListener(new ActionListener() 
+		{
+		       public void actionPerformed(ActionEvent ae)
+		       {
+		           game.start();
+		       }
+		});
+		
 		rightPanel.add(btnStart);
 		
 		JButton btnMove = new JButton("Move");
+		btnMove.addActionListener(new ActionListener() 
+		{
+		       public void actionPerformed(ActionEvent ae)
+		       {
+		           game.move();
+		       }
+		});
+		       
 		rightPanel.add(btnMove);
 		
 		JButton btnUndo = new JButton("Undo");

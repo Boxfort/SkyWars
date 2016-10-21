@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import java.lang.*;
 
-public class SkyWarsCore extends JPanel implements Runnable
+public class SkyWarsCore extends JPanel
 {
 	private static final int SPRITE_SIZE       = 70  ;
 	private static final int DRAWING_GRID_SIZE = 137 ;
@@ -59,12 +60,37 @@ public class SkyWarsCore extends JPanel implements Runnable
 	
 	public void start()
 	{
+		Thread loop = new Thread()
+	    {
+	         public void run()
+	         {
+	            gameLoop();
+	         }
+	    };
+	    
+	    loop.start();
 		//TODO: Spawn players ship
+	}
+	
+	public void gameLoop()
+	{
+		while(true)
+		{
+			try 
+			{
+				Thread.sleep(1000);
+				System.out.println("hello");
+			} 
+			catch (InterruptedException e) 
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void move()
 	{
-		
+		System.out.print("DOOT");
 	}
 	
 	public void undo()
@@ -82,7 +108,8 @@ public class SkyWarsCore extends JPanel implements Runnable
 		//TODO: CLEARUP THE GAME
 	}
 	
-	
-	
-	
+	 public void actionPerformed(ActionEvent e)
+	 {
+		 Object s = e.getSource();
+	 }
 }
