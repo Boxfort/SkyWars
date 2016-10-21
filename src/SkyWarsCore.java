@@ -7,8 +7,9 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import java.lang.*;
 
-public class SkyWarsCore extends JPanel
+public class SkyWarsCore extends JPanel implements Runnable
 {
 	private static final int SPRITE_SIZE       = 70  ;
 	private static final int DRAWING_GRID_SIZE = 137 ;
@@ -58,29 +59,30 @@ public class SkyWarsCore extends JPanel
 	
 	public void start()
 	{
-		if(!running)
-			run();
+		//TODO: Spawn players ship
 	}
 	
-	public void run()
+	public void move()
 	{
-		running = true;
+		
+	}
+	
+	public void undo()
+	{
+		
+	}
+	
+	public void redo()
+	{
+		
 	}
 	
 	public void stop()
 	{
-		if(running)
-		{
-			//TODO: CLEARUP THE GAME
-			running = false;
-		}
-			
+		//TODO: CLEARUP THE GAME
 	}
 	
-	public void performTurn()
-	{
-		
-	}
+	
 	
 	
 }
