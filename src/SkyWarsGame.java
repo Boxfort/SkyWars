@@ -36,8 +36,7 @@ public class SkyWarsGame
 	private static final int    DIVIDER_SIZE 	  = 0         ;
 
 	private JFrame frame;
-	Painter leftPanel;
-	private ArrayList<SpaceShip> spaceShips = new ArrayList<SpaceShip>();
+	SkyWarsCore game;
 	
 	/**
 	 * Launch the application.
@@ -85,9 +84,9 @@ public class SkyWarsGame
 		splitPane.setDividerSize(DIVIDER_SIZE);
 		frame.getContentPane().add(splitPane, "name_565518731957572");
 		
-		leftPanel = new Painter();
-		splitPane.setLeftComponent(leftPanel);
-		leftPanel.setLayout(new CardLayout(0, 0));
+		game = new SkyWarsCore();
+		splitPane.setLeftComponent(game);
+		game.setLayout(new CardLayout(0, 0));
 		
 		JPanel rightPanel = new JPanel();
 		splitPane.setRightComponent(rightPanel);
@@ -108,14 +107,5 @@ public class SkyWarsGame
 		
 		JButton btnEnd = new JButton("End Game");
 		rightPanel.add(btnEnd);
-		
-		spaceShips.add(new MasterSpaceShip("Hello", (new Point(1,1))));
-		draw();
-	}
-
-	public void draw()
-	{
-		leftPanel.setSpaceships(this.spaceShips);
-		leftPanel.repaint();
 	}
 }
