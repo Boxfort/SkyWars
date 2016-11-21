@@ -2,11 +2,11 @@ import java.awt.Point;
 
 public class MasterSpaceShip extends SpaceShip
 {	
-	private OperationalMode operationalMode = OperationalMode.defensive;
+	private OperationalMode operationalMode = OperationalMode.offensive;
 
-	public MasterSpaceShip(String name, Point position)
+	public MasterSpaceShip(Point position)
 	{
-		super(name, position, "src/sprites/MasterShip.png");
+		super(position, "src/sprites/MasterShip.png");
 	}
 	
 	public OperationalMode getOperationalMode()

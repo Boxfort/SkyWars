@@ -4,24 +4,12 @@ public abstract class SpaceShip
 {
 	private final String spriteSrc;
 	
-	private String name;
-	private Point  position;
+	protected Point  position;
 	
-	public SpaceShip(String name, Point position, String src)
+	public SpaceShip(Point position, String src)
 	{
-		this.name = name;
 		this.position = position;
 		this.spriteSrc = src;
-	}
-	
-	public String getName()
-	{
-		return name;
-	}
-	
-	public void setName(String name)
-	{
-		this.name = name;
 	}
 	
 	public Point getPosition()

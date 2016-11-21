@@ -51,7 +51,8 @@ public class SkyWarsGame
 				{
 					SkyWarsGame window = new SkyWarsGame();
 					window.frame.setVisible(true);
-				} catch (Exception e)
+				} 
+				catch (Exception e)
 				{
 					e.printStackTrace();
 				}
@@ -84,7 +85,7 @@ public class SkyWarsGame
 		splitPane.setDividerSize(DIVIDER_SIZE);
 		frame.getContentPane().add(splitPane, "name_565518731957572");
 		
-		game = new SkyWarsCore();
+		game = new SkyWarsCore(60);
 		splitPane.setLeftComponent(game);
 		game.setLayout(new CardLayout(0, 0));
 		
@@ -116,6 +117,13 @@ public class SkyWarsGame
 		rightPanel.add(btnMove);
 		
 		JButton btnUndo = new JButton("Undo");
+		btnUndo.addActionListener(new ActionListener()
+		{
+				public void actionPerformed(ActionEvent ae)
+				{
+					game.undo();
+				}
+		});
 		rightPanel.add(btnUndo);
 		
 		JButton btnRedo = new JButton("Redo");

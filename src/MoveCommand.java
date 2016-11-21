@@ -15,11 +15,13 @@ public class MoveCommand implements ICommand
 	
 	public void Execute()
 	{
+		Point endPosition = new Point((int)(startPosition.getX() + moveDirection.x), (int)(startPosition.getY() + moveDirection.y));
 		
+		spaceShip.setPosition(endPosition); 
 	}
 
 	public void UnExecute()
 	{
-		
+		spaceShip.setPosition(startPosition);
 	}	
 }
