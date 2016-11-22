@@ -3,7 +3,7 @@ import java.awt.Point;
 
 public abstract class SpaceShip
 {
-	private final String spriteSrc;
+	private String spriteSrc;
 
 	protected String pilotName;
 	protected Point  position;
@@ -33,6 +33,11 @@ public abstract class SpaceShip
 	public String getSpriteSrc()
 	{
 		return this.spriteSrc;
+	}
+	
+	public void setSpriteSrc(String src)
+	{
+		this.spriteSrc = src;
 	}
 	
 	public String getPilotName()

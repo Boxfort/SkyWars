@@ -1,6 +1,10 @@
 package SW;
-public enum OperationalMode
+
+import java.util.ArrayList;
+
+import Ships.SpaceShip;
+
+public interface OperationalMode 
 {
-	defensive,
-	offensive
+	public boolean combat(ArrayList<SpaceShip> enemies);
 }

@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
+import javax.swing.SpringLayout;
 import javax.swing.border.EmptyBorder;
 
 import Observer.IObserver;
@@ -15,12 +16,17 @@ import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.Point;
@@ -123,14 +129,16 @@ public class SkyWarsGame implements IObserver
 		
 		JPanel rightPanel = new JPanel();
 		splitPane.setRightComponent(rightPanel);
-		rightPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		rightPanel.setLayout(new GridLayout(5, 1, 0, 10));
+		rightPanel.setBorder(new EmptyBorder(10, 10, 10, 0));
+		rightPanel.setLayout(new GridLayout(6, 1, 20, 30));
+
 
 		JButton btnStart = new JButton("Start Game");
 		btnStart.addActionListener(new ActionListener() 
 		{
 	        public void actionPerformed(ActionEvent ae)
 	        {
+	        	textPane.setText("");
 	            game.start();
 	        }
 		});
@@ -177,6 +185,31 @@ public class SkyWarsGame implements IObserver
 			}
 		});
 		rightPanel.add(btnEnd);
+		
+		JRadioButton defensive = new JRadioButton("Defensive");
+		defensive.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e)
+			{
+				game.setOperationalMode(new DefensiveMode());
+			}
+		});
+	    JRadioButton aggressive = new JRadioButton("Aggressive");
+	    aggressive.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e)
+			{
+				game.setOperationalMode(new AggressiveMode());
+			}
+		});
+	    ButtonGroup buttonGroup = new ButtonGroup();
+	    buttonGroup.add(defensive);
+	    buttonGroup.add(aggressive);
+	    
+	    JPanel radioPanel = new JPanel();
+	    radioPanel.add(defensive);
+	    radioPanel.add(aggressive);
+	    radioPanel.setLayout(new FlowLayout());
+	    
+	    rightPanel.add(radioPanel);
 	}
 
 	@Override

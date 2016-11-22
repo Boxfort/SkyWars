@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Commands.CreateEnemyCommand;
@@ -22,6 +23,7 @@ import Commands.CreateEnemyFactory;
 import Commands.DestroyEnemyCommand;
 import Commands.MoveCommand;
 import Commands.MoveCommandFactory;
+import Commands.PlayerDefeatCommand;
 import Ships.MasterSpaceShip;
 import Ships.SpaceShip;
 import Observer.IObservable;
@@ -45,6 +47,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 	
 	private Random rand = new Random();
 	private boolean running = false;
+	private boolean paused = false;
 	private double frameTime;
 	
 	public SkyWarsCore(int frameRate) 
@@ -143,7 +146,8 @@ public class SkyWarsCore extends JPanel implements IObservable
 	{
 		while(running)
 		{
-			this.repaint();
+			if(!paused)
+				this.repaint();
 			
 			try
 			{
@@ -218,6 +222,15 @@ public class SkyWarsCore extends JPanel implements IObservable
 		this.states.push(state);
 	}
 	
+	public void setOperationalMode(OperationalMode opMode)
+	{
+		if(!running || paused)
+			return;
+		
+		playerShip.setOperationalMode(opMode);
+		publishUpdate("Operational mode set to : " + opMode.toString());
+	}
+	
 	/**
 	 * Detects whether or not the player occupies the same space as
 	 * an enemy, and how many, then decides what to do.
@@ -227,6 +240,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 	{
 		ArrayList<SpaceShip> onPlayerTile = new ArrayList<SpaceShip>();
 		
+		//Get all enemy ships on the same tile as the player
 		for(SpaceShip s : spaceShips)
 		{
 			if(s.getPosition().getX() == playerShip.getPosition().getX() && s.getPosition().getY() == playerShip.getPosition().getY())
@@ -235,12 +249,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 			}
 		}
 		
-		if(onPlayerTile.size() > 2 || (onPlayerTile.size() == 2 && playerShip.getOperationalMode() == OperationalMode.defensive))
-		{
-			//TODO: End Game
-			publishUpdate("You have been defeated!");
-		}
-		else
+		if(playerShip.Combat(onPlayerTile))
 		{
 			//Destoy all ships on the same tile as the player
 			for(SpaceShip s : onPlayerTile)
@@ -253,15 +262,49 @@ public class SkyWarsCore extends JPanel implements IObservable
 				
 				playSound("explosion.wav");
 			}
+
+		}
+		else
+		{
+			publishUpdate("You have been defeated!");
+			PlayerDefeatCommand pdf = new PlayerDefeatCommand(this);
+			state.addCommand(pdf);
+			this.states.push(state);
+			pdf.Execute();
 		}
 	}
 	
+	public void onDefeat()
+	{
+		playerShip.setSpriteSrc("src/sprites/explosion.png");
+		paused = true;
+		
+		String[] options = { "Restart", "Undo", "Exit" };
+		int response = JOptionPane.showOptionDialog(null, "You were defeated!", "Game Over", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+		
+		playerShip.setSpriteSrc("src/sprites/MasterShip.png");
+		paused = false;
+		
+		switch(response) 
+		{
+		case 0:
+			this.stop();
+			this.start();
+			break;
+		case 1:
+			undo();
+			break;
+		case 2:
+			System.exit(0);
+		}
+	}
+
 	/**
 	 * Reverts back to the previous game state if one exists.
 	 */
 	public void undo()
 	{
-		if(!running)
+		if(!running || paused)
 			return;
 		
 		try
@@ -281,12 +324,20 @@ public class SkyWarsCore extends JPanel implements IObservable
 	 */
 	public void redo()
 	{
-		if(!running)
+		if(!running || paused)
 			return;
 		
+		try
+		{
 		GameState state = redoStates.pop();
 		state.executeState();
+		combat(state);
 		this.states.add(state);
+		}
+		catch(NullPointerException ex)
+		{
+			
+		}
 	}
 	
 	/**
@@ -294,7 +345,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 	 */
 	public void stop()
 	{
-		if(!running)
+		if(!running || paused)
 			return;
 		
 		this.states.clear();
