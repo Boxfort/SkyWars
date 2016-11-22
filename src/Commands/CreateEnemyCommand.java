@@ -15,6 +15,11 @@ public class CreateEnemyCommand implements ICommand
 	private SpaceShip enemy;
 	private Random rand = new Random();
 	
+	/**
+	 * Creates a random enemy spaceship
+	 * @param shipsList The list of enemies which this enemy will be contained in.
+	 * @param pilotName The name of the enemy pilot.
+	 */
 	public CreateEnemyCommand(ArrayList<SpaceShip> shipsList, String pilotName)
 	{
 		this.shipsList = shipsList; 
@@ -40,11 +45,17 @@ public class CreateEnemyCommand implements ICommand
 		return this.enemy;
 	}
 	
+	/**
+	 * Adds created enemy to the ship list.
+	 */
 	public void Execute()
 	{
 		shipsList.add(enemy);
 	}
 
+	/**
+	 * Removes created enemy to the ship list.
+	 */
 	public void UnExecute()
 	{
 		shipsList.remove(enemy);

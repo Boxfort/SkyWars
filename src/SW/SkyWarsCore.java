@@ -43,19 +43,15 @@ public class SkyWarsCore extends JPanel implements IObservable
 	private Stack<GameState> states = new Stack<GameState>();
 	private Stack<GameState> redoStates = new Stack<GameState>();
 	
+	private Random rand = new Random();
 	private boolean running = false;
 	private double frameTime;
 	
 	public SkyWarsCore(int frameRate) 
 	{ 
 		 frameTime = 1.0 / frameRate;
-		 playerShip = new MasterSpaceShip(new Point(1,1), "You");
+		 spawnPlayer();
 	}
-	
-	 @Override
-     public Dimension getPreferredSize() {
-         return new Dimension(548, 548);
-     }
 	
 	@Override
 	public void paintComponent(Graphics g)
@@ -97,6 +93,11 @@ public class SkyWarsCore extends JPanel implements IObservable
 		}
 	}
 	
+	/**
+	 * Plays a sound file from the src/sounds/ folder
+	 * with the specified name in its own thread.
+	 * @param url Filename and extension of the sound to be played.
+	 */
 	public static synchronized void playSound(final String url) {
 		  new Thread(new Runnable() {
 		    public void run() {
@@ -112,10 +113,17 @@ public class SkyWarsCore extends JPanel implements IObservable
 		  }).start();
 		}
 	
+	/**
+	 * Begins the game loop if not already started.
+	 */
 	public void start()
 	{
+		if(running)
+			return;
+		
 		running = true;
 		publishUpdate("Game started!");
+		spawnPlayer();
 		
 		Thread loop = new Thread()
 	    {
@@ -128,6 +136,9 @@ public class SkyWarsCore extends JPanel implements IObservable
 	    loop.start();
 	}
 	
+	/**
+	 * Re-draws the panel every frame
+	 */
 	public void gameLoop()
 	{
 		while(running)
@@ -144,27 +155,52 @@ public class SkyWarsCore extends JPanel implements IObservable
 		}
 	}
 	
+	/**
+	 * Picks a random location in the grid which
+	 * isn't (0,0) and instantiates the players ship.
+	 */
+	public void spawnPlayer()
+	{
+		int x, y;
+		
+		do
+		{
+			x = rand.nextInt(GRID_COLUMNS - 1);
+			y = rand.nextInt(GRID_ROWS - 1);
+		}
+		while(x == 0 && y == 0);
+		
+		playerShip = new MasterSpaceShip(new Point(x,y), "Player");
+	}
+	
+	/**
+	 * Carries out a single turn in the game.
+	 */
 	public void move()
 	{
 		if(!running)
 			return;
 		
+		//Since a move has been made, all redos are removed.
 		this.redoStates.clear();
 		
 		GameState state = new GameState();
 		
 		MoveCommandFactory moveFactory = new MoveCommandFactory();
 		
+		//Generate a movement for the player
 		MoveCommand pmc = moveFactory.GenerateMove(playerShip);
 		state.addCommand(pmc);
 		
+		//For each enemy generate a movement
 		for(SpaceShip ship : spaceShips)
 		{
 			MoveCommand mc = moveFactory.GenerateMove(ship);
 			state.addCommand(mc);
 		}
 		
-		if(Math.random() * 3 > 2)
+		//1 in 3 chance of a new enemy spawning each turn
+		if((rand.nextInt(3)+1) > 2)
 		{
 			CreateEnemyFactory enemyFactory = new CreateEnemyFactory();
 			CreateEnemyCommand cec = enemyFactory.generateEnemy(this.spaceShips);
@@ -182,6 +218,11 @@ public class SkyWarsCore extends JPanel implements IObservable
 		this.states.push(state);
 	}
 	
+	/**
+	 * Detects whether or not the player occupies the same space as
+	 * an enemy, and how many, then decides what to do.
+	 * @param state The game state which combat is to take place in.
+	 */
 	private void combat(GameState state)
 	{
 		ArrayList<SpaceShip> onPlayerTile = new ArrayList<SpaceShip>();
@@ -201,6 +242,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 		}
 		else
 		{
+			//Destoy all ships on the same tile as the player
 			for(SpaceShip s : onPlayerTile)
 			{
 				DestroyEnemyCommand dec = new DestroyEnemyCommand(s, spaceShips);
@@ -214,16 +256,29 @@ public class SkyWarsCore extends JPanel implements IObservable
 		}
 	}
 	
+	/**
+	 * Reverts back to the previous game state if one exists.
+	 */
 	public void undo()
 	{
 		if(!running)
 			return;
 		
-		GameState state = this.states.pop();
-		state.revertState();
-		this.redoStates.add(state);
+		try
+		{
+			GameState state = this.states.pop();
+			state.revertState();
+			this.redoStates.add(state);
+		}
+		catch(NullPointerException ex)
+		{
+			
+		}
 	}
 	
+	/**
+	 * Reverts back to a previously undone game state, if one exists.
+	 */
 	public void redo()
 	{
 		if(!running)
@@ -234,6 +289,9 @@ public class SkyWarsCore extends JPanel implements IObservable
 		this.states.add(state);
 	}
 	
+	/**
+	 * Ends the current game if it is running.
+	 */
 	public void stop()
 	{
 		if(!running)
@@ -243,6 +301,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 		this.redoStates.clear();
 		this.spaceShips.clear();
 		
+		publishUpdate("Game stopped.");
 		running = false;
 	}
 	

@@ -1,14 +1,18 @@
 package SW;
+
+/**
+ * Enumeration for 8 directions
+ */
 public enum Direction
 {
-	up	      ( 0, 1 ),
-	upRight   ( 1, 1 ),
-	right     ( 1, 0 ),
-	downRight ( 1,-1 ),
-	down      ( 0,-1 ),
-	downLeft  (-1,-1 ),
-	left      (-1, 0 ),
-	upLeft    (-1, 1 );
+	UP	       ( 0, 1 ),
+	UP_RIGHT   ( 1, 1 ),
+	RIGHT      ( 1, 0 ),
+	DOWN_RIGHT ( 1,-1 ),
+	DOWN       ( 0,-1 ),
+	DOWN_LEFT  (-1,-1 ),
+	LEFT       (-1, 0 ),
+	UP_LEFT    (-1, 1 );
 	
 	public int x, y;
 	

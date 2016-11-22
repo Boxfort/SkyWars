@@ -14,6 +14,11 @@ public class MoveCommandFactory
 		rand = new Random();
 	}
 	
+	/**
+	 * Generates a MoveCommand with a random direction.
+	 * @param ship the ship which will move
+	 * @return Command which will move the ship in the randomly specified direction
+	 */
 	public MoveCommand GenerateMove(SpaceShip ship)
 	{
 		Direction d;

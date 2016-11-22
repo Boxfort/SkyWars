@@ -8,6 +8,11 @@ public abstract class SpaceShip
 	protected String pilotName;
 	protected Point  position;
 	
+	/**
+	 * @param position The position on the grid where the spaceship is located.
+	 * @param pilotName Name of the pilot of the ship.
+	 * @param src Filepath to the sprite used for this spaceship.
+	 */
 	public SpaceShip(Point position, String pilotName, String src)
 	{
 		this.position = position;

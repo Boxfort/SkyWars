@@ -169,6 +169,13 @@ public class SkyWarsGame implements IObserver
 		rightPanel.add(btnRedo);
 		
 		JButton btnEnd = new JButton("End Game");
+		btnEnd.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+				game.stop();
+			}
+		});
 		rightPanel.add(btnEnd);
 	}
 
