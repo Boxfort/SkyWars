@@ -1,3 +1,4 @@
+package SW;
 public enum Direction
 {
 	up	      ( 0, 1 ),
@@ -9,7 +10,7 @@ public enum Direction
 	left      (-1, 0 ),
 	upLeft    (-1, 1 );
 	
-	int x, y;
+	public int x, y;
 	
 	Direction(int x, int y)
 	{ 

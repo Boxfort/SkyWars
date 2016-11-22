@@ -1,4 +1,8 @@
+package Commands;
 import java.awt.Point;
+
+import SW.Direction;
+import Ships.SpaceShip;
 
 public class MoveCommand implements ICommand
 {
@@ -24,4 +28,9 @@ public class MoveCommand implements ICommand
 	{
 		spaceShip.setPosition(startPosition);
 	}	
+	
+	public SpaceShip getShip()
+	{
+		return this.spaceShip;
+	}
 }

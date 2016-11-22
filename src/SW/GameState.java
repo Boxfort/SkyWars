@@ -1,4 +1,7 @@
+package SW;
 import java.util.ArrayList;
+
+import Commands.ICommand;
 
 public class GameState
 {

@@ -1,4 +1,7 @@
+package Commands;
 import java.util.ArrayList;
+
+import Ships.SpaceShip;
 
 public class DestroyEnemyCommand implements ICommand
 {
@@ -19,6 +22,11 @@ public class DestroyEnemyCommand implements ICommand
 	public void UnExecute()
 	{
 		shipsList.add(enemy);
+	}
+
+	public SpaceShip getShip()
+	{
+		return this.enemy;
 	}
 
 }

@@ -1,5 +1,9 @@
+package Commands;
 import java.awt.Point;
 import java.util.Random;
+
+import SW.Direction;
+import Ships.SpaceShip;
 
 public class MoveCommandFactory
 {
@@ -39,7 +43,6 @@ public class MoveCommandFactory
 			return false;
 		}
 		
-		System.out.println(endPosition.getX()+" , "+endPosition.getY());
 		return true;
 	}
 }
