@@ -1,4 +1,6 @@
 package Commands;
+
+
 import java.awt.Point;
 
 import SW.Direction;

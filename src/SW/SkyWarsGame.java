@@ -200,6 +200,8 @@ public class SkyWarsGame implements IObserver
 				game.setOperationalMode(new AggressiveMode());
 			}
 		});
+	    
+	    defensive.setSelected(true);
 	    ButtonGroup buttonGroup = new ButtonGroup();
 	    buttonGroup.add(defensive);
 	    buttonGroup.add(aggressive);

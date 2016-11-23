@@ -125,7 +125,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 			return;
 		
 		running = true;
-		publishUpdate("Game started!");
+		notifyObservers("Game started!");
 		spawnPlayer();
 		
 		Thread loop = new Thread()
@@ -211,7 +211,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 			
 			state.addCommand(cec);
 			
-			publishUpdate("Enemy \""+ cec.getShip().getPilotName() + "\" ("+cec.getShip().toString()+") has entered the battle!");
+			notifyObservers("Enemy \""+ cec.getShip().getPilotName() + "\" ("+cec.getShip().toString()+") has entered the battle!");
 			playSound("spawn.wav");
 		}
 		
@@ -228,7 +228,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 			return;
 		
 		playerShip.setOperationalMode(opMode);
-		publishUpdate("Operational mode set to : " + opMode.toString());
+		notifyObservers("Operational mode set to : " + opMode.toString());
 	}
 	
 	/**
@@ -258,7 +258,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 				dec.Execute();
 				state.addCommand(dec);
 				
-				publishUpdate("Enemy \""+ dec.getShip().getPilotName() + "\" ("+dec.getShip().toString()+") has been destroyed!");
+				notifyObservers("Enemy \""+ dec.getShip().getPilotName() + "\" ("+dec.getShip().toString()+") has been destroyed!");
 				
 				playSound("explosion.wav");
 			}
@@ -266,7 +266,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 		}
 		else
 		{
-			publishUpdate("You have been defeated!");
+			notifyObservers("You have been defeated!");
 			PlayerDefeatCommand pdf = new PlayerDefeatCommand(this);
 			state.addCommand(pdf);
 			this.states.push(state);
@@ -274,6 +274,9 @@ public class SkyWarsCore extends JPanel implements IObservable
 		}
 	}
 	
+	/**
+	 * When the player is defeated this method should be called.
+	 */
 	public void onDefeat()
 	{
 		playerShip.setSpriteSrc("src/sprites/explosion.png");
@@ -352,7 +355,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 		this.redoStates.clear();
 		this.spaceShips.clear();
 		
-		publishUpdate("Game stopped.");
+		notifyObservers("Game stopped.");
 		running = false;
 	}
 	
@@ -374,7 +377,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 	}
 
 	@Override
-	public void publishUpdate(String updateText)
+	public void notifyObservers(String updateText)
 	{
 		for(IObserver o : this.observers)
 		{
