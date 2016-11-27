@@ -52,7 +52,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 	
 	public SkyWarsCore(int frameRate) 
 	{ 
-		 frameTime = 1.0 / frameRate;
+		 frameTime = 1000000000 / frameRate;
 		 spawnPlayer();
 	}
 	
@@ -144,14 +144,33 @@ public class SkyWarsCore extends JPanel implements IObservable
 	 */
 	public void gameLoop()
 	{
+		long lastUpdateTime = System.nanoTime();
+		double lastFpsTime = 0;
+		int fps = 0;
+		
 		while(running)
 		{
+			long now = System.nanoTime();
+			long updateLength = now - lastUpdateTime;
+			lastUpdateTime = now;
+			double delta = updateLength / frameTime;
+			
+			lastFpsTime += updateLength;
+		    fps++;
+		    
+		    if (lastFpsTime >= 1000000000)
+		    {
+		    	System.out.println("(FPS: "+fps+")");
+		        lastFpsTime = 0;
+		        fps = 0;
+		    }
+			
 			if(!paused)
 				this.repaint();
 			
 			try
 			{
-				Thread.sleep(10);
+				Thread.sleep( (long) ((lastUpdateTime-System.nanoTime() + frameTime)/1000000) );
 			} 
 			catch (InterruptedException e)
 			{

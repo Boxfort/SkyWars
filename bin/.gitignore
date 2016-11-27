@@ -1,17 +1,1 @@
 /SW/
-/Observer/
-/Commands/
-/Ships/
-/test$1.class
-/test.class
-/sprites/
-/Events/
-/ClassDiagram.ucls
-/CreateEnemyCommand.class
-/CreateEnemyFactory.class
-/DestroyEnemyCommand.class
-/ICommand.class
-/MoveCommand.class
-/MoveCommandFactory.class
-/Names.class
-/PlayerDefeatCommand.class
