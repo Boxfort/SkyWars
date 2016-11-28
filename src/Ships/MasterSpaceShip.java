@@ -11,7 +11,7 @@ public class MasterSpaceShip extends SpaceShip
 
 	public MasterSpaceShip(Point position, String pilotName)
 	{
-		super(position, pilotName,"src/sprites/MasterShip.png");
+		super(position, pilotName,"/sprites/MasterShip.png");
 	}
 	
 	/**

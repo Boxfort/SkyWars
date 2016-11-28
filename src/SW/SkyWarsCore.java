@@ -33,6 +33,7 @@ import java.lang.*;
 
 public class SkyWarsCore extends JPanel implements IObservable
 {
+	private static final long serialVersionUID = 1L;
 	private static final int SPRITE_SIZE       = 70  ;
 	private static final int DRAWING_GRID_SIZE = 137 ;
 	private static final int GRID_COLUMNS      = 4   ;
@@ -62,7 +63,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 		try
 		{
 			//Draw the space image background
-			BufferedImage img1 = ImageIO.read(new File("src/sprites/space.jpg"));
+			BufferedImage img1 = ImageIO.read(SkyWarsCore.class.getResourceAsStream("/sprites/space.jpg"));
 			g.drawImage(img1, 0, 0, DRAWING_GRID_SIZE * GRID_COLUMNS, DRAWING_GRID_SIZE * GRID_ROWS, null);
 		
 			//Draw the white grid
@@ -81,13 +82,13 @@ public class SkyWarsCore extends JPanel implements IObservable
 			//Draw all enemy spaceships that exist
 			for(SpaceShip ship : spaceShips)
 			{			
-					BufferedImage img = ImageIO.read(new File(ship.getSpriteSrc()));
+					BufferedImage img = ImageIO.read(SkyWarsCore.class.getResourceAsStream(ship.getSpriteSrc()));
 					g.drawImage(img, (ship.getPosition().x * DRAWING_GRID_SIZE) + ((DRAWING_GRID_SIZE / 4)), (ship.getPosition().y * DRAWING_GRID_SIZE) + ((DRAWING_GRID_SIZE / 4)), SPRITE_SIZE, SPRITE_SIZE, null);
 					g.drawString(ship.getPilotName(), ship.getPosition().x * DRAWING_GRID_SIZE + ((DRAWING_GRID_SIZE / 4) + 15), ship.getPosition().y * DRAWING_GRID_SIZE + ((DRAWING_GRID_SIZE) - 15));
 			}	
 			
 			//Draw the player Ship
-			BufferedImage img = ImageIO.read(new File(playerShip.getSpriteSrc()));
+			BufferedImage img = ImageIO.read(SkyWarsCore.class.getResourceAsStream(playerShip.getSpriteSrc()));
 			g.drawImage(img, (playerShip.getPosition().x * DRAWING_GRID_SIZE) + (DRAWING_GRID_SIZE / 4), (playerShip.getPosition().y * DRAWING_GRID_SIZE) + (DRAWING_GRID_SIZE / 4), SPRITE_SIZE, SPRITE_SIZE, null);
 		}
 		catch(IOException ex)
@@ -106,11 +107,11 @@ public class SkyWarsCore extends JPanel implements IObservable
 		    public void run() {
 		      try {
 		        Clip clip = AudioSystem.getClip();
-		        AudioInputStream inputStream = AudioSystem.getAudioInputStream(new File("src/sounds/"+url));
+		        AudioInputStream inputStream = AudioSystem.getAudioInputStream(SkyWarsCore.class.getResource(url));
 		        clip.open(inputStream);
 		        clip.start(); 
 		      } catch (Exception e) {
-		        System.err.println(e.getMessage() + "Shits fucked");
+		        System.err.println(e.getMessage());
 		      }
 		    }
 		  }).start();
@@ -231,7 +232,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 			state.addCommand(cec);
 			
 			notifyObservers("Enemy \""+ cec.getShip().getPilotName() + "\" ("+cec.getShip().toString()+") has entered the battle!");
-			playSound("spawn.wav");
+			playSound("/sounds/spawn.wav");
 		}
 		
 		state.executeState();
@@ -279,7 +280,7 @@ public class SkyWarsCore extends JPanel implements IObservable
 				
 				notifyObservers("Enemy \""+ dec.getShip().getPilotName() + "\" ("+dec.getShip().toString()+") has been destroyed!");
 				
-				playSound("explosion.wav");
+				playSound("/sounds/explosion.wav");
 			}
 
 		}
@@ -298,13 +299,13 @@ public class SkyWarsCore extends JPanel implements IObservable
 	 */
 	public void onDefeat()
 	{
-		playerShip.setSpriteSrc("src/sprites/explosion.png");
+		playerShip.setSpriteSrc("/sprites/explosion.png");
 		paused = true;
 		
 		String[] options = { "Restart", "Undo", "Exit" };
 		int response = JOptionPane.showOptionDialog(null, "You were defeated!", "Game Over", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		
-		playerShip.setSpriteSrc("src/sprites/MasterShip.png");
+		playerShip.setSpriteSrc("/sprites/MasterShip.png");
 		paused = false;
 		
 		switch(response) 

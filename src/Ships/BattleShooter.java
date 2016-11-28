@@ -5,7 +5,7 @@ public class BattleShooter extends SpaceShip
 {
 	public BattleShooter(Point position, String pilotName)
 	{
-		super(position, pilotName, "src/sprites/BattleShooter.png");
+		super(position, pilotName, "/sprites/BattleShooter.png");
 	}
 	
 	public String toString()
