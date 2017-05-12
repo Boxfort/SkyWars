@@ -16,4 +16,8 @@ public class AggressiveMode implements OperationalMode
 		return false;
 	}
 
+	public String toString()
+	{
+		return "Aggressive";
+	}
 }

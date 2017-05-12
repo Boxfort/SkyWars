@@ -16,4 +16,8 @@ public class DefensiveMode implements OperationalMode
 		return false;
 	}
 
+	public String toString()
+	{
+		return "Defensive";
+	}
 }
